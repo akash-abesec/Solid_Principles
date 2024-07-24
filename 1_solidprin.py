@@ -19,27 +19,27 @@ The single-responsibility principle states that: "A class should have only one r
 
 # Ex:-
 
-# from pathlib import Path
-# from zipfile import ZipFile
-#
-#
-# class FileManager:
-#     def __init__(self, filename):
-#         self.path = Path(filename)
-#
-#     def read(self, encoding="utf-8"):
-#         return self.path.read_text(encoding)
-#
-#     def write(self, data, encoding="utf-8"):
-#         self.path.write_text(data, encoding)
-#
-#     def compress(self):
-#         with ZipFile(self.path.with_suffix(".zip"), mode="w") as archive:
-#             archive.write(self.path)
-#
-#     def decompress(self):
-#         with ZipFile(self.path.with_suffix(".zip"), mode="r") as archive:
-#             archive.extractall()
+from pathlib import Path
+from zipfile import ZipFile
+
+
+class FileManager:
+    def __init__(self, filename):
+        self.path = Path(filename)
+
+    def read(self, encoding="utf-8"):
+        return self.path.read_text(encoding)
+
+    def write(self, data, encoding="utf-8"):
+        self.path.write_text(data, encoding)
+
+    def compress(self):
+        with ZipFile(self.path.with_suffix(".zip"), mode="w") as archive:
+            archive.write(self.path)
+
+    def decompress(self):
+        with ZipFile(self.path.with_suffix(".zip"), mode="r") as archive:
+            archive.extractall()
 
 
 """
@@ -54,32 +54,32 @@ To fix this issue and make your design more robust, you can split the class into
  """
 
 
-# from pathlib import Path
-# from zipfile import ZipFile
-#
-#
-# class FileManager:
-#     def __init__(self, filename):
-#         self.path = Path(filename)
-#
-#     def read(self, encoding="utf-8"):
-#         return self.path.read_text(encoding)
-#
-#     def write(self, data, encoding="utf-8"):
-#         self.path.write_text(data, encoding)
-#
-#
-# class ZipFileManager:
-#     def __init__(self, filename):
-#         self.path = Path(filename)
-#
-#     def compress(self):
-#         with ZipFile(self.path.with_suffix(".zip"), mode="w") as archive:
-#             archive.write(self.path)
-#
-#     def decompress(self):
-#         with ZipFile(self.path.with_suffix(".zip"), mode="r") as archive:
-#             archive.extractall()
+from pathlib import Path
+from zipfile import ZipFile
+
+
+class FileManager:
+    def __init__(self, filename):
+        self.path = Path(filename)
+
+    def read(self, encoding="utf-8"):
+        return self.path.read_text(encoding)
+
+    def write(self, data, encoding="utf-8"):
+        self.path.write_text(data, encoding)
+
+
+class ZipFileManager:
+    def __init__(self, filename):
+        self.path = Path(filename)
+
+    def compress(self):
+        with ZipFile(self.path.with_suffix(".zip"), mode="w") as archive:
+            archive.write(self.path)
+
+    def decompress(self):
+        with ZipFile(self.path.with_suffix(".zip"), mode="r") as archive:
+            archive.extractall()
 
 
 """
@@ -89,68 +89,68 @@ To fix this issue and make your design more robust, you can split the class into
                                    but closed for modification.
 Ex :-                            
 """
-# from math import pi
-#
-#
-# class Shape:
-#     def __init__(self, shape_type, **kwargs):
-#         self.shape_type = shape_type
-#         if self.shape_type == "rectangle":
-#             self.width = kwargs["width"]
-#             self.height = kwargs["height"]
-#         elif self.shape_type == "circle":
-#             self.radius = kwargs["radius"]
-#
-#     def calculate_area(self):
-#         if self.shape_type == "rectangle":
-#             return self.width * self.height
-#         elif self.shape_type == "circle":
-#             return pi * self.radius**2
+from math import pi
+
+
+class Shape:
+    def __init__(self, shape_type, **kwargs):
+        self.shape_type = shape_type
+        if self.shape_type == "rectangle":
+            self.width = kwargs["width"]
+            self.height = kwargs["height"]
+        elif self.shape_type == "circle":
+            self.radius = kwargs["radius"]
+
+    def calculate_area(self):
+        if self.shape_type == "rectangle":
+            return self.width * self.height
+        elif self.shape_type == "circle":
+            return pi * self.radius**2
 """
 The initializer of Shape takes a shape_type argument that can be either "rectangle" or "circle". It also takes a
  specific set of keyword arguments using the **kwargs syntax. If you set the shape type to "rectangle", then you should
   also pass the width and height keyword arguments so that you can construct a proper rectangle.
 """
 
-# from abc import ABC, abstractmethod
-# from math import pi
-#
-#
-# class Shape(ABC):
-#     def __init__(self, shape_type):
-#         self.shape_type = shape_type
-#
-#     @abstractmethod
-#     def calculate_area(self):
-#         pass
-#
-#
-# class Circle(Shape):
-#     def __init__(self, radius):
-#         super().__init__("circle")
-#         self.radius = radius
-#
-#     def calculate_area(self):
-#         return pi * self.radius**2
-#
-#
-# class Rectangle(Shape):
-#     def __init__(self, width, height):
-#         super().__init__("rectangle")
-#         self.width = width
-#         self.height = height
-#
-#     def calculate_area(self):
-#         return self.width * self.height
-#
-#
-# class Square(Shape):
-#     def __init__(self, side):
-#         super().__init__("square")
-#         self.side = side
-#
-#     def calculate_area(self):
-#         return self.side**2
+from abc import ABC, abstractmethod
+from math import pi
+
+
+class Shape(ABC):
+    def __init__(self, shape_type):
+        self.shape_type = shape_type
+
+    @abstractmethod
+    def calculate_area(self):
+        pass
+
+
+class Circle(Shape):
+    def __init__(self, radius):
+        super().__init__("circle")
+        self.radius = radius
+
+    def calculate_area(self):
+        return pi * self.radius**2
+
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        super().__init__("rectangle")
+        self.width = width
+        self.height = height
+
+    def calculate_area(self):
+        return self.width * self.height
+
+
+class Square(Shape):
+    def __init__(self, side):
+        super().__init__("square")
+        self.side = side
+
+    def calculate_area(self):
+        return self.side**2
 
 """
 In this code, you completely refactored the Shape class, turning it into an abstract base class (ABC). This class
