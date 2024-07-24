@@ -15,13 +15,13 @@ For example, if you have a piece of code that works with a Shape class, then you
 """
 
 
-# class Rectangle:
-#     def __init__(self, width, height):
-#         self.width = width
-#         self.height = height
-#
-#     def calculate_area(self):
-#         return self.width * self.height
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def calculate_area(self):
+        return self.width * self.height
 
 
 """
@@ -30,15 +30,15 @@ Because a square is a special case of a rectangle with equal sides, you think of
 """
 
 
-# class Square(Rectangle):
-#     def __init__(self, side):
-#         super().__init__(side, side)
-#
-#     def __setattr__(self, key, value):
-#         super().__setattr__(key, value)
-#         if key in ("width", "height"):
-#             self.__dict__["width"] = value
-#             self.__dict__["height"] = value
+class Square(Rectangle):
+    def __init__(self, side):
+        super().__init__(side, side)
+
+    def __setattr__(self, key, value):
+        super().__setattr__(key, value)
+        if key in ("width", "height"):
+            self.__dict__["width"] = value
+            self.__dict__["height"] = value
 
 
 """
@@ -47,31 +47,31 @@ takes only the side of the square as an argument. Internally, the .__init__() me
 attributes, .width and .height, with the side argument.
 """
 
-# from abc import ABC, abstractmethod
-#
-#
-# class Shape(ABC):
-#     @abstractmethod
-#     def calculate_area(self):
-#         pass
-#
-#
-# class Rectangle(Shape):
-#     def __init__(self, width, height):
-#         self.width = width
-#         self.height = height
-#
-#     def calculate_area(self):
-#         return self.width * self.height
-#
-#
-# class Square(Shape):
-#     def __init__(self, side):
-#         self.side = side
-#
-#     def calculate_area(self):
-#         return self.side ** 2
-#
+from abc import ABC, abstractmethod
+
+
+class Shape(ABC):
+    @abstractmethod
+    def calculate_area(self):
+        pass
+
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def calculate_area(self):
+        return self.width * self.height
+
+
+class Square(Shape):
+    def __init__(self, side):
+        self.side = side
+
+    def calculate_area(self):
+        return self.side ** 2
+
 
 
 """
@@ -89,43 +89,43 @@ if a class doesn’t use particular methods or attributes, then those methods an
  more specific classes.
 """
 
-# from abc import ABC, abstractmethod
-#
-#
-# class Printer(ABC):
-#     @abstractmethod
-#     def print(self, document):
-#         pass
-#
-#     @abstractmethod
-#     def fax(self, document):
-#         pass
-#
-#     @abstractmethod
-#     def scan(self, document):
-#         pass
-#
-#
-# class OldPrinter(Printer):
-#     def print(self, document):
-#         print(f"Printing {document} in black and white...")
-#
-#     def fax(self, document):
-#         raise NotImplementedError("Fax functionality not supported")
-#
-#     def scan(self, document):
-#         raise NotImplementedError("Scan functionality not supported")
-#
-# 
-# class ModernPrinter(Printer):
-#     def print(self, document):
-#         print(f"Printing {document} in color...")
-#
-#     def fax(self, document):
-#         print(f"Faxing {document}...")
-#
-#     def scan(self, document):
-#         print(f"Scanning {document}...")
+from abc import ABC, abstractmethod
+
+
+class Printer(ABC):
+    @abstractmethod
+    def print(self, document):
+        pass
+
+    @abstractmethod
+    def fax(self, document):
+        pass
+
+    @abstractmethod
+    def scan(self, document):
+        pass
+
+
+class OldPrinter(Printer):
+    def print(self, document):
+        print(f"Printing {document} in black and white...")
+
+    def fax(self, document):
+        raise NotImplementedError("Fax functionality not supported")
+
+    def scan(self, document):
+        raise NotImplementedError("Scan functionality not supported")
+
+
+class ModernPrinter(Printer):
+    def print(self, document):
+        print(f"Printing {document} in color...")
+
+    def fax(self, document):
+        print(f"Faxing {document}...")
+
+    def scan(self, document):
+        print(f"Scanning {document}...")
 
 
 """
@@ -183,18 +183,18 @@ Abstractions should not depend upon details. Details should depend upon abstract
 """
 
 
-# class FrontEnd:
-#     def __init__(self, back_end):
-#         self.back_end = back_end
-#
-#     def display_data(self):
-#         data = self.back_end.get_data_from_database()
-#         print("Display data:", data)
-#
-#
-# class BackEnd:
-#     def get_data_from_database(self):
-#         return "Data from the database"
+class FrontEnd:
+    def __init__(self, back_end):
+        self.back_end = back_end
+
+    def display_data(self):
+        data = self.back_end.get_data_from_database()
+        print("Display data:", data)
+
+
+class BackEnd:
+    def get_data_from_database(self):
+        return "Data from the database"
 
 
 """
@@ -202,29 +202,29 @@ In this example, the FrontEnd class depends on the BackEnd class and its concret
  classes are tightly coupled. 
 """
 
-# from abc import ABC, abstractmethod
-#
+from abc import ABC, abstractmethod
 
-# class FrontEnd:
-#     def __init__(self, data_source):
-#         self.data_source = data_source
-#
-#     def display_data(self):
-#         data = self.data_source.get_data()
-#         print("Display data:", data)
-#
 
-# class DataSource(ABC):
-#     @abstractmethod
-#     def get_data(self):
-#         pass
-#
+class FrontEnd:
+    def __init__(self, data_source):
+        self.data_source = data_source
 
-# class Database(DataSource):
-#     def get_data(self):
-#         return "Data from the database"
-#
+    def display_data(self):
+        data = self.data_source.get_data()
+        print("Display data:", data)
 
-# class API(DataSource):
-#     def get_data(self):
-#         return "Data from the API"
+
+class DataSource(ABC):
+    @abstractmethod
+    def get_data(self):
+        pass
+
+
+class Database(DataSource):
+    def get_data(self):
+        return "Data from the database"
+
+
+class API(DataSource):
+    def get_data(self):
+        return "Data from the API"
